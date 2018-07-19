@@ -25,6 +25,9 @@ class GalleryViewController: UICollectionViewController {
     return searchController
   }()
 
+  // Robots.
+  let robots = [Robot]()
+
   // MARK: - Init
   convenience init() {
     let layout = UICollectionViewFlowLayout()
@@ -60,7 +63,7 @@ class GalleryViewController: UICollectionViewController {
 extension GalleryViewController {
 
   override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-    return 50
+    return robots.count
   }
 
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
