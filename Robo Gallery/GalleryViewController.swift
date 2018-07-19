@@ -16,18 +16,41 @@ class GalleryViewController: UICollectionViewController {
     static let itemsPerRow: CGFloat = 4
   }
 
+  // Search field.
+  let searchController: UISearchController = {
+    let searchController = UISearchController(searchResultsController: nil)
+    // Don't hide the navigation bar because the search bar is in it.
+    searchController.hidesNavigationBarDuringPresentation = false
 
+    return searchController
+  }()
+
+  // MARK: - Init
   convenience init() {
     let layout = UICollectionViewFlowLayout()
     self.init(collectionViewLayout: layout)
+  }
+
+  override init(collectionViewLayout layout: UICollectionViewLayout) {
+    super.init(collectionViewLayout: layout)
+
+    searchController.searchBar.delegate = self
+  }
+
+  required init?(coder aDecoder: NSCoder) {
+    fatalError("init(coder:) not supported")
   }
 
   // MARK: - View Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    // Collection View.
     collectionView?.backgroundColor = .white
     collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: UICollectionViewCell.reuseIdentifier())
+
+    // Place the search bar in the navigation item's title view.
+    self.navigationItem.titleView = searchController.searchBar
 
   }
 
@@ -73,4 +96,13 @@ extension GalleryViewController : UICollectionViewDelegateFlowLayout {
   }
 }
 
+
+// MARK: - UISearchBarDelegate
+extension GalleryViewController: UISearchBarDelegate {
+
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    print("search: \(String(describing: searchBar.text))")
+  }
+
+}
 
