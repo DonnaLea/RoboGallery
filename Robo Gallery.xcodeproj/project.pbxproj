@@ -10,8 +10,7 @@
 		4949D3783CD3659F533ECECD /* Pods_Robo_GalleryUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D9F14378D61B59420E28A5B3 /* Pods_Robo_GalleryUITests.framework */; };
 		50554EEE1CCED60854663FA4 /* Pods_Robo_GalleryTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31CC7F82F76089847EC07C3B /* Pods_Robo_GalleryTests.framework */; };
 		6763FA2C210044CB00CC9711 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6763FA2B210044CB00CC9711 /* AppDelegate.swift */; };
-		6763FA2E210044CB00CC9711 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6763FA2D210044CB00CC9711 /* ViewController.swift */; };
-		6763FA31210044CB00CC9711 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6763FA2F210044CB00CC9711 /* Main.storyboard */; };
+		6763FA2E210044CB00CC9711 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6763FA2D210044CB00CC9711 /* GalleryViewController.swift */; };
 		6763FA33210044CC00CC9711 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6763FA32210044CC00CC9711 /* Assets.xcassets */; };
 		6763FA36210044CC00CC9711 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6763FA34210044CC00CC9711 /* LaunchScreen.storyboard */; };
 		6763FA41210044CC00CC9711 /* Robo_GalleryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6763FA40210044CC00CC9711 /* Robo_GalleryTests.swift */; };
@@ -42,8 +41,7 @@
 		4074053F926C0BA293EC3990 /* Pods-Robo GalleryUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Robo GalleryUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Robo GalleryUITests/Pods-Robo GalleryUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		6763FA28210044CB00CC9711 /* Robo Gallery.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Robo Gallery.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6763FA2B210044CB00CC9711 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		6763FA2D210044CB00CC9711 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		6763FA30210044CB00CC9711 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		6763FA2D210044CB00CC9711 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		6763FA32210044CC00CC9711 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		6763FA35210044CC00CC9711 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6763FA37210044CC00CC9711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -115,8 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				6763FA2B210044CB00CC9711 /* AppDelegate.swift */,
-				6763FA2D210044CB00CC9711 /* ViewController.swift */,
-				6763FA2F210044CB00CC9711 /* Main.storyboard */,
+				6763FA2D210044CB00CC9711 /* GalleryViewController.swift */,
 				6763FA32210044CC00CC9711 /* Assets.xcassets */,
 				6763FA34210044CC00CC9711 /* LaunchScreen.storyboard */,
 				6763FA37210044CC00CC9711 /* Info.plist */,
@@ -274,7 +271,6 @@
 			files = (
 				6763FA36210044CC00CC9711 /* LaunchScreen.storyboard in Resources */,
 				6763FA33210044CC00CC9711 /* Assets.xcassets in Resources */,
-				6763FA31210044CB00CC9711 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,7 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6763FA2E210044CB00CC9711 /* ViewController.swift in Sources */,
+				6763FA2E210044CB00CC9711 /* GalleryViewController.swift in Sources */,
 				6763FA2C210044CB00CC9711 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -393,14 +389,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		6763FA2F210044CB00CC9711 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6763FA30210044CB00CC9711 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		6763FA34210044CC00CC9711 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -533,7 +521,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Robo Gallery/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.donnamcculloch.Robo-Gallery";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -548,7 +539,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Robo Gallery/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.donnamcculloch.Robo-Gallery";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -564,7 +558,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Robo GalleryTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.donnamcculloch.Robo-GalleryTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -581,7 +579,11 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Robo GalleryTests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.donnamcculloch.Robo-GalleryTests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -597,7 +599,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Robo GalleryUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.donnamcculloch.Robo-GalleryUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -613,7 +619,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Robo GalleryUITests/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.donnamcculloch.Robo-GalleryUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

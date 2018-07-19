@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  GalleryViewController.swift
 //  Robo Gallery
 //
 //  Created by Donna McCulloch on 18/7/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GalleryViewController: UIViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
