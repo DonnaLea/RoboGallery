@@ -119,6 +119,11 @@ extension GalleryViewController : UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
     return Constants.cellSpacing
   }
+
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let robot = robots[indexPath.row]
+    navigationController?.pushViewController(RobotViewController(robot: robot), animated: true)
+  }
 }
 
 
