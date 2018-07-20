@@ -17,6 +17,7 @@ class GalleryViewController: UICollectionViewController {
   fileprivate struct Constants {
     static let cellSpacing = CGFloat(2.0)
     static let itemsPerRow: CGFloat = 4
+    static let robotURL: String = "https://robohash.org/"
   }
 
   // Search field.
@@ -24,12 +25,14 @@ class GalleryViewController: UICollectionViewController {
     let searchController = UISearchController(searchResultsController: nil)
     // Don't hide the navigation bar because the search bar is in it.
     searchController.hidesNavigationBarDuringPresentation = false
+    searchController.obscuresBackgroundDuringPresentation = false
+    searchController.dimsBackgroundDuringPresentation = false
 
     return searchController
   }()
 
   // Robots.
-  let robots = [Robot]()
+  var robots = [Robot]()
 
   // MARK: - Init
   convenience init() {
@@ -53,11 +56,25 @@ class GalleryViewController: UICollectionViewController {
 
     // Collection View.
     collectionView?.backgroundColor = .white
-    collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: UICollectionViewCell.reuseIdentifier())
+    collectionView?.register(RobotCollectionViewCell.self, forCellWithReuseIdentifier: RobotCollectionViewCell.reuseIdentifier())
 
     // Place the search bar in the navigation item's title view.
     self.navigationItem.titleView = searchController.searchBar
 
+  }
+
+  // MARK: - Custom
+
+  /// Request a robot image with the given `text`.
+  private func requestRobot(text: String) {
+    let urlString = Constants.robotURL.appending(text)
+
+    Alamofire.request(urlString).responseImage { response in
+      if let image = response.result.value {
+        self.robots.append(Robot(text: text, image: image))
+        self.collectionView?.reloadData()
+      }
+    }
   }
 
 }
@@ -70,8 +87,10 @@ extension GalleryViewController {
   }
 
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UICollectionViewCell.reuseIdentifier(), for: indexPath)
-    cell.backgroundColor = .red
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RobotCollectionViewCell.reuseIdentifier(), for: indexPath) as! RobotCollectionViewCell
+    let robot = robots[indexPath.row]
+
+    cell.imageView.image = robot.image
 
     return cell
   }
@@ -107,8 +126,9 @@ extension GalleryViewController : UICollectionViewDelegateFlowLayout {
 extension GalleryViewController: UISearchBarDelegate {
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    print("search: \(String(describing: searchBar.text))")
+    if let text = searchBar.text {
+      requestRobot(text: text)
+    }
   }
-
 }
 
