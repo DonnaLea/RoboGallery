@@ -6,6 +6,7 @@ target 'Robo Gallery' do
   use_frameworks!
 
   # Pods for Robo Gallery
+  pod 'AlamofireImage'
 
   target 'Robo GalleryTests' do
     inherit! :search_paths

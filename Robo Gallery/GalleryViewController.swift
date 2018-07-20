@@ -8,6 +8,9 @@
 
 import UIKit
 
+import Alamofire
+import AlamofireImage
+
 class GalleryViewController: UICollectionViewController {
 
   // MARK: - Properties
