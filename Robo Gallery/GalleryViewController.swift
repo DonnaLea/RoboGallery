@@ -67,13 +67,18 @@ class GalleryViewController: UICollectionViewController {
 
   /// Request a robot image with the given `text`.
   private func requestRobot(text: String) {
-    let urlString = Constants.robotURL.appending(text)
+    if let urlSafeText = text.addingPercentEncoding(withAllowedCharacters: .init()) {
+      let urlString = Constants.robotURL.appending(urlSafeText)
 
-    Alamofire.request(urlString).responseImage { response in
-      if let image = response.result.value {
-        self.robots.append(Robot(text: text, image: image))
-        self.collectionView?.reloadData()
+      Alamofire.request(urlString).responseImage { response in
+        if let image = response.result.value {
+          self.robots.append(Robot(text: text, image: image))
+          self.collectionView?.reloadData()
+        }
       }
+    } else {
+      searchController.isActive = false
+      searchController.searchBar.text = nil
     }
   }
 
