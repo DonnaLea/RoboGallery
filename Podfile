@@ -7,6 +7,7 @@ target 'Robo Gallery' do
 
   # Pods for Robo Gallery
   pod 'AlamofireImage'
+  pod 'RealmSwift'
 
   target 'Robo GalleryTests' do
     inherit! :search_paths
