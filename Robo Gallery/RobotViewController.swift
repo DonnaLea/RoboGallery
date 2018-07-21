@@ -53,6 +53,8 @@ class RobotViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    view.backgroundColor = .white
+
     // Image view.
     view.addSubview(imageView)
     imageView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true

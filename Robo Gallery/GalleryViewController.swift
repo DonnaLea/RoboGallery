@@ -67,13 +67,19 @@ class GalleryViewController: UICollectionViewController {
 
   /// Request a robot image with the given `text`.
   private func requestRobot(text: String) {
+    var robot = Robot(text: text, image: nil)
+    robots.append(robot)
+    self.collectionView?.reloadData()
+    let row = robots.count - 1
     if let urlSafeText = text.addingPercentEncoding(withAllowedCharacters: .init()) {
       let urlString = Constants.robotURL.appending(urlSafeText)
 
       Alamofire.request(urlString).responseImage { response in
         if let image = response.result.value {
-          self.robots.append(Robot(text: text, image: image))
-          self.collectionView?.reloadData()
+          // Save image data to robot.
+          robot.image = image
+          self.robots[row] = robot
+          self.collectionView?.reloadItems(at: [IndexPath(row: row, section: 0)])
         }
       }
     } else {
@@ -95,7 +101,7 @@ extension GalleryViewController {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RobotCollectionViewCell.reuseIdentifier(), for: indexPath) as! RobotCollectionViewCell
     let robot = robots[indexPath.row]
 
-    cell.imageView.image = robot.image
+    cell.setImage(image: robot.image)
 
     return cell
   }

@@ -9,13 +9,26 @@
 import UIKit
 
 class RobotCollectionViewCell: UICollectionViewCell {
-  let imageView: UIImageView = {
+
+  // MARK: - Properties
+
+  private let imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.contentMode = .scaleAspectFill
 
     return imageView
   }()
+
+  private let activityIndicatorView: UIActivityIndicatorView = {
+    let view = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+    view.hidesWhenStopped = true
+    view.translatesAutoresizingMaskIntoConstraints = false
+
+    return view
+  }()
+
+  // MARK: - Init
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -25,10 +38,24 @@ class RobotCollectionViewCell: UICollectionViewCell {
     imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     imageView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
     imageView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
+
+    addSubview(activityIndicatorView)
+    activityIndicatorView.centerXAnchor.constraint(equalTo: imageView.centerXAnchor).isActive = true
+    activityIndicatorView.centerYAnchor.constraint(equalTo: imageView.centerYAnchor).isActive = true
   }
 
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) not supported")
   }
 
+  // MARK: - Custom
+
+  func setImage(image: UIImage?) {
+    imageView.image = image
+    if image == nil {
+      activityIndicatorView.startAnimating()
+    } else {
+      activityIndicatorView.stopAnimating()
+    }
+  }
 }

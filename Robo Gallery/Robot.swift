@@ -15,6 +15,6 @@ struct Robot {
   let text: String
 
   /// The resulting robot image from fetching with `text`.
-  let image: UIImage
+  var image: UIImage?
 
 }
