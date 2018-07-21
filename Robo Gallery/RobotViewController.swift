@@ -67,7 +67,6 @@ class RobotViewController: UIViewController {
     label.leadingAnchor.constraintEqualToSystemSpacingAfter(view.leadingAnchor, multiplier: 1).isActive = true
     view.trailingAnchor.constraintEqualToSystemSpacingAfter(label.trailingAnchor, multiplier: 1).isActive = true
     view.safeAreaLayoutGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(label.bottomAnchor, multiplier: 1).isActive = true
-    label.topAnchor.constraintEqualToSystemSpacingBelow(imageView.bottomAnchor, multiplier: 1).isActive = true
 
     imageView.image = robot.image
   }
