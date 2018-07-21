@@ -67,7 +67,8 @@ class GalleryViewController: UICollectionViewController {
 
   /// Request a robot image with the given `text`.
   private func requestRobot(text: String) {
-    var robot = Robot(text: text, image: nil)
+    let robot = Robot()
+    robot.text = text
     robots.append(robot)
     self.collectionView?.reloadData()
     let row = robots.count - 1
@@ -78,7 +79,6 @@ class GalleryViewController: UICollectionViewController {
         if let image = response.result.value {
           // Save image data to robot.
           robot.image = image
-          self.robots[row] = robot
           self.collectionView?.reloadItems(at: [IndexPath(row: row, section: 0)])
         }
       }
