@@ -8,6 +8,8 @@
 
 import UIKit
 
+import RealmSwift
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -18,8 +20,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     window = UIWindow(frame: UIScreen.main.bounds)
     window?.backgroundColor = .white
     window?.makeKeyAndVisible()
-    let navigationController = UINavigationController(rootViewController: GalleryViewController())
-    window?.rootViewController = navigationController
+
+    window?.rootViewController = UIViewController()
+    let creds = SyncCredentials.nickname(UIDevice.current.identifierForVendor!.uuidString, isAdmin: true)
+
+    SyncUser.logIn(with: creds, server: RealmConstants.AUTH_URL) { (user, error) in
+      if let _ = user {
+        let navigationController = UINavigationController(rootViewController: GalleryViewController())
+        self.window?.rootViewController = navigationController
+      } else if let error = error {
+        fatalError(error.localizedDescription)
+      }
+    }
 
     return true
   }

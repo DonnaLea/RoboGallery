@@ -14,9 +14,12 @@ import RealmSwift
 class Robot: Object {
 
   /// Text used to fetch the Robot.
-  var text: String = ""
+  @objc dynamic var text: String = ""
 
   /// The resulting robot image from fetching with `text`.
-  var image: UIImage?
+  @objc dynamic var imageData: Data?
+
+  /// The timestamp when the robot was requested.
+  @objc dynamic var timestamp: Date = Date()
 
 }
