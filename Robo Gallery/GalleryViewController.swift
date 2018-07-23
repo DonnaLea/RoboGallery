@@ -16,13 +16,19 @@ final class GalleryViewController: UICollectionViewController {
 
   // MARK: - Properties
 
+  /// Constants relevant to just this class.
   private struct Constants {
+    /// Spacing between cells, vertical and horizontal.
     static let cellSpacing = CGFloat(2.0)
+
+    /// Number of items to display in a row.
     static let itemsPerRow: CGFloat = 4
+
+    /// URL to the robo hash api.
     static let robotURL: String = "https://robohash.org/"
   }
 
-  // Search field.
+  /// Search controller for requesting a robot.
   private let searchController: UISearchController = {
     let searchController = UISearchController(searchResultsController: nil)
     // Don't hide the navigation bar because the search bar is in it.
@@ -33,6 +39,7 @@ final class GalleryViewController: UICollectionViewController {
     return searchController
   }()
 
+  /// Segmented controller for switching between sets of robots.
   private let segmentedControl: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: ["Set 1", "Set 2", "Set 3"])
     segmentedControl.selectedSegmentIndex = 0
@@ -40,17 +47,23 @@ final class GalleryViewController: UICollectionViewController {
     return segmentedControl
   }()
 
+  /// Getter for currently selected index of sets.
   private var currentIndex: Int {
     return segmentedControl.selectedSegmentIndex
   }
 
-  // Realm.
+  /// Realm to store objects in the cloud and persist locally.
   private let realm: Realm
+
+  /// Robots that have been stored in `realm`.
   private let robots: Results<Robot>
+
+  /// Notification token to track changes in `realm`.
   private var notificationToken: NotificationToken?
 
   // MARK: - Init
 
+  /// Defaults to using the `UICollectionViewFlowLayout`.
   convenience init() {
     let layout = UICollectionViewFlowLayout()
     self.init(collectionViewLayout: layout)
@@ -64,12 +77,13 @@ final class GalleryViewController: UICollectionViewController {
 
     super.init(collectionViewLayout: layout)
 
-    segmentedControl.addTarget(self, action: #selector(segmentedControlTapped(sender:)), for: .valueChanged)
+    segmentedControl.addTarget(self, action: #selector(segmentedControlValueChanged(sender:)), for: .valueChanged)
     searchController.searchBar.delegate = self
     addRealmNotificationHandler()
     updateRobotsIfNeeded()
   }
 
+  /// Storyboards not supported.
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) not supported")
   }
@@ -87,7 +101,7 @@ final class GalleryViewController: UICollectionViewController {
 
     // Collection View.
     collectionView?.backgroundColor = .white
-    collectionView?.register(RobotCollectionViewCell.self, forCellWithReuseIdentifier: RobotCollectionViewCell.reuseIdentifier())
+    collectionView?.register(ImageActivityCollectionViewCell.self, forCellWithReuseIdentifier: ImageActivityCollectionViewCell.reuseIdentifier())
 
     // Place the search bar in the navigation item's title view.
     navigationItem.titleView = searchController.searchBar
@@ -107,7 +121,13 @@ final class GalleryViewController: UICollectionViewController {
 
   // MARK: - Actions
 
-  @objc private func segmentedControlTapped(sender: UISegmentedControl) {
+  /**
+   Action for `segmentedControl` value being changed by tapping a different index. This reloads the collection view to display the new set of images for each robot. If the robots haven't already got an image
+   stored for the new index then the images will be requested.
+
+   - Parameter sender: The segmented control that was changed.
+   */
+  @objc private func segmentedControlValueChanged(sender: UISegmentedControl) {
     // Using reloadSections instead of reloadData due to a bug where performBatchUpdates after reloadData does not finish reloading the other cells.
     // Details can be seen at this open radar: http://www.openradar.me/31748196 and github project made for the openradar https://github.com/lionheart/openradar-mirror/issues/17286
     collectionView?.reloadSections(IndexSet(integer: 0))
@@ -116,7 +136,12 @@ final class GalleryViewController: UICollectionViewController {
 
   // MARK: - Custom
 
-  /// Request a robot image with the given `text` and `set` where `set` is not zero based, starting at 1.
+  /**
+   Create a robot and request an image with the given `text` and `set` where `set` is not zero based, starting at 1.
+
+   - Parameter text: The text used to fetch the robot image.
+   - Parameter set: The specific robot set to fetch the robot image of.
+   */
   private func requestRobot(text: String, set: Int) {
     let robot = Robot()
     robot.text = text
@@ -127,6 +152,12 @@ final class GalleryViewController: UICollectionViewController {
     requestImageFor(robot: robot, set: set)
   }
 
+  /**
+   Request a robot image for the given `robot` and `set` where `set` is not zero based, starting at 1.
+
+   - Parameter robot: The robot text will be used to fetch the robot image.
+   - Parameter set: The specific robot set to fetch the robot image of.
+   */
   private func requestImageFor(robot: Robot, set: Int) {
     if let urlSafeText = robot.text.addingPercentEncoding(withAllowedCharacters: .init()) {
       let urlString = Constants.robotURL.appending(urlSafeText).appending("?set=set\(set)")
@@ -145,6 +176,7 @@ final class GalleryViewController: UICollectionViewController {
     }
   }
 
+  /// Add the segmented control to the toolbar in the `navigationController`.
   private func addSegmentedControl() {
     let segmentControlToolbarItem = UIBarButtonItem(customView: segmentedControl)
     let toolbarSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
@@ -152,6 +184,7 @@ final class GalleryViewController: UICollectionViewController {
     setToolbarItems(toolbarItems, animated: false)
   }
 
+  /// Loop through each robot and request an image for the current set if one isn't already stored.
   private func updateRobotsIfNeeded() {
     for robot in robots {
       if robot.imageData(index: currentIndex).count == 0 {
@@ -160,6 +193,7 @@ final class GalleryViewController: UICollectionViewController {
     }
   }
 
+  /// Add a notification handler to update the `collectionView` when data changes in `realm`.
   private func addRealmNotificationHandler() {
     notificationToken = robots.observe { changes in
       guard let collectionView = self.collectionView else { return }
@@ -192,7 +226,7 @@ extension GalleryViewController {
   }
 
   override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RobotCollectionViewCell.reuseIdentifier(), for: indexPath) as! RobotCollectionViewCell
+    let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageActivityCollectionViewCell.reuseIdentifier(), for: indexPath) as! ImageActivityCollectionViewCell
     let robot = robots[indexPath.row]
 
     let imageData = robot.imageData(index: currentIndex)

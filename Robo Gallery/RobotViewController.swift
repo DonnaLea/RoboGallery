@@ -16,6 +16,7 @@ final class RobotViewController: UIViewController {
   /// Robot to be displayed.
   private let robot: Robot
 
+  /// Easy reference to keep the relevant `robot` image data.
   private let imageData: Data
 
   /// Image view of the robot.
@@ -27,7 +28,7 @@ final class RobotViewController: UIViewController {
     return imageView
   }()
 
-  // Label of the robot text.
+  /// Label for the robot text.
   private lazy var label: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
@@ -41,6 +42,15 @@ final class RobotViewController: UIViewController {
   }()
 
   // MARK: - Init
+
+  /**
+   Returns a newly initialized RobotViewController with the robot displaying the image for the specified index.
+
+   - Parameter robot: The robot to display.
+   - Parameter index: The specific image to display of the robot.
+
+   - Returns: A newly initialized RobotViewController.
+   */
   init(robot: Robot, index: Int) {
     self.robot = robot
     imageData = robot.imageData(index: index)
@@ -48,11 +58,13 @@ final class RobotViewController: UIViewController {
     title = robot.text
   }
 
+  /// Storyboards not supported.
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) not supported")
   }
 
   // MARK: - View Lifecycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 

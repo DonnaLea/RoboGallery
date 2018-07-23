@@ -10,7 +10,7 @@ import UIKit
 
 extension UICollectionViewCell {
 
-  // Use the class as the reuseIdentifier String.
+  /// Use the class as the reuseIdentifier string.
   static func reuseIdentifier() -> String {
     return "\(self)"
   }

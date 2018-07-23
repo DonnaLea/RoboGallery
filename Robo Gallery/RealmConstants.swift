@@ -8,14 +8,15 @@
 
 import Foundation
 
+/// Holds constants relevant to realm.
 struct RealmConstants {
 
-  // **** ROS On-Premises Users
-  // **** Replace the AUTH_URL and REALM_URL strings with the fully qualified versions of
-  // **** address of your ROS server, e.g.: "http://127.0.0.1:9080" and "realm://127.0.0.1:9080"
-
+  /// The address for my realm instance.
   static let MY_INSTANCE_ADDRESS = "robo-gallery.us1.cloud.realm.io"
 
+  /// The authentication URL based on the instance address.
   static let AUTH_URL  = URL(string: "https://\(MY_INSTANCE_ADDRESS)")!
+
+  /// The realm URL based on the instance address.
   static let REALM_URL = URL(string: "realms://\(MY_INSTANCE_ADDRESS)/RoboGallery")!
 }
