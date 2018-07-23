@@ -16,6 +16,8 @@ class RobotViewController: UIViewController {
   /// Robot to be displayed.
   let robot: Robot
 
+  let imageData: Data 
+
   /// Image view of the robot.
   lazy var imageView: UIImageView = {
     let imageView = UIImageView()
@@ -39,8 +41,9 @@ class RobotViewController: UIViewController {
   }()
 
   // MARK: - Init
-  init(robot: Robot) {
+  init(robot: Robot, index: Int) {
     self.robot = robot
+    imageData = robot.imageData(index: index)
     super.init(nibName: nil, bundle: nil)
     title = robot.text
   }
@@ -68,10 +71,8 @@ class RobotViewController: UIViewController {
     view.trailingAnchor.constraintEqualToSystemSpacingAfter(label.trailingAnchor, multiplier: 1).isActive = true
     view.safeAreaLayoutGuide.bottomAnchor.constraintEqualToSystemSpacingBelow(label.bottomAnchor, multiplier: 1).isActive = true
 
-    if let imageData = robot.imageData {
+    if imageData.count > 0 {
       imageView.image = UIImage(data: imageData)
     }
   }
-
-
 }

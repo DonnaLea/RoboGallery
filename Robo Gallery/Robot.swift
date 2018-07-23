@@ -14,12 +14,35 @@ import RealmSwift
 class Robot: Object {
 
   /// Text used to fetch the Robot.
-  @objc dynamic var text: String = ""
+  @objc dynamic var text = ""
 
   /// The resulting robot image from fetching with `text`.
-  @objc dynamic var imageData: Data?
+  private let images = List<RobotImage>()
 
   /// The timestamp when the robot was requested.
-  @objc dynamic var timestamp: Date = Date()
+  @objc dynamic var timestamp = Date()
 
+  func imageData(index: Int) -> Data {
+    let robotImage = images.filter { $0.key ==  index }.first ?? RobotImage()
+
+    return robotImage.data
+  }
+
+  func setImageData(index: Int, imageData: Data) {
+    let storedRobotImage = images.filter { $0.key == index }.first
+    if let storedRobotImage = storedRobotImage {
+      storedRobotImage.data = imageData
+    } else {
+      let robotImage = RobotImage()
+      robotImage.key = index
+      robotImage.data = imageData
+      images.append(robotImage)
+    }
+  }
+}
+
+class RobotImage: Object {
+  @objc dynamic var key = 0
+
+  @objc dynamic var data = Data()
 }

@@ -39,6 +39,11 @@ class GalleryViewController: UICollectionViewController {
 
     return segmentedControl
   }()
+
+  var currentIndex: Int {
+    return segmentedControl.selectedSegmentIndex
+  }
+
   // Realm.
   let realm: Realm
   let robots: Results<Robot>
@@ -54,13 +59,15 @@ class GalleryViewController: UICollectionViewController {
   override init(collectionViewLayout layout: UICollectionViewLayout) {
 
     let syncConfig = SyncConfiguration(user: SyncUser.current!, realmURL: RealmConstants.REALM_URL)
-    self.realm = try! Realm(configuration: Realm.Configuration(syncConfiguration: syncConfig, objectTypes:[Robot.self]))
+    self.realm = try! Realm(configuration: Realm.Configuration(syncConfiguration: syncConfig, objectTypes:[Robot.self, RobotImage.self]))
     self.robots = realm.objects(Robot.self).sorted(byKeyPath: "timestamp", ascending: false)
 
     super.init(collectionViewLayout: layout)
 
+    segmentedControl.addTarget(self, action: #selector(segmentedControlTapped(sender:)), for: .valueChanged)
     searchController.searchBar.delegate = self
     addRealmNotificationHandler()
+    updateRobotsIfNeeded()
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -88,24 +95,47 @@ class GalleryViewController: UICollectionViewController {
     addSegmentedControl()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.setToolbarHidden(false, animated: animated)
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.setToolbarHidden(true, animated: animated)
+  }
+
+  // MARK: - Actions
+
+  @objc func segmentedControlTapped(sender: UISegmentedControl) {
+    // Using reloadSections instead of reloadData due to a bug where performBatchUpdates after reloadData does not finish reloading the other cells.
+    // Details can be seen at this open radar: http://www.openradar.me/31748196 and github project made for the openradar https://github.com/lionheart/openradar-mirror/issues/17286
+    collectionView?.reloadSections(IndexSet(integer: 0))
+    updateRobotsIfNeeded()
+  }
+
   // MARK: - Custom
 
-  /// Request a robot image with the given `text`.
-  private func requestRobot(text: String) {
+  /// Request a robot image with the given `text` and `set` where `set` is not zero based, starting at 1.
+  private func requestRobot(text: String, set: Int) {
     let robot = Robot()
     robot.text = text
     try? realm.write {
       realm.add(robot)
     }
 
-    if let urlSafeText = text.addingPercentEncoding(withAllowedCharacters: .init()) {
-      let urlString = Constants.robotURL.appending(urlSafeText)
+    requestImageFor(robot: robot, set: set)
+  }
+
+  private func requestImageFor(robot: Robot, set: Int) {
+    if let urlSafeText = robot.text.addingPercentEncoding(withAllowedCharacters: .init()) {
+      let urlString = Constants.robotURL.appending(urlSafeText).appending("?set=set\(set)")
 
       Alamofire.request(urlString).responseImage { response in
-        if let image = response.result.value {
+        if let image = response.result.value, let imageData = UIImagePNGRepresentation(image), imageData.count > 0 {
           // Save image data to robot.
           try? self.realm.write {
-            robot.imageData = UIImagePNGRepresentation(image)
+            robot.setImageData(index: set-1, imageData: imageData)
           }
         }
       }
@@ -120,11 +150,14 @@ class GalleryViewController: UICollectionViewController {
     let toolbarSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let toolbarItems = [toolbarSpace, segmentControlToolbarItem, toolbarSpace]
     setToolbarItems(toolbarItems, animated: false)
-    navigationController?.isToolbarHidden = false
   }
 
-  @objc func segmentedControlTapped(sender: UISegmentedControl) {
-    print("segment: \(sender.selectedSegmentIndex)")
+  private func updateRobotsIfNeeded() {
+    for robot in robots {
+      if robot.imageData(index: currentIndex).count == 0 {
+        requestImageFor(robot: robot, set: currentIndex+1)
+      }
+    }
   }
 
   func addRealmNotificationHandler() {
@@ -162,7 +195,8 @@ extension GalleryViewController {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RobotCollectionViewCell.reuseIdentifier(), for: indexPath) as! RobotCollectionViewCell
     let robot = robots[indexPath.row]
 
-    if let imageData = robot.imageData {
+    let imageData = robot.imageData(index: currentIndex)
+    if imageData.count > 0 {
       cell.setImage(image: UIImage(data: imageData))
     } else {
       cell.setImage(image: nil)
@@ -199,7 +233,7 @@ extension GalleryViewController : UICollectionViewDelegateFlowLayout {
 
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let robot = robots[indexPath.row]
-    navigationController?.pushViewController(RobotViewController(robot: robot), animated: true)
+    navigationController?.pushViewController(RobotViewController(robot: robot, index: currentIndex), animated: true)
   }
 }
 
@@ -210,7 +244,7 @@ extension GalleryViewController: UISearchBarDelegate {
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
     if let text = searchBar.text {
-      requestRobot(text: text)
+      requestRobot(text: text, set: currentIndex+1)
     }
   }
 }
