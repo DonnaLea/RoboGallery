@@ -9,17 +9,17 @@
 import UIKit
 
 /// View controller to display the Robot in detail with an image and a label.
-class RobotViewController: UIViewController {
+final class RobotViewController: UIViewController {
 
   // MARK: - Properties
 
   /// Robot to be displayed.
-  let robot: Robot
+  private let robot: Robot
 
-  let imageData: Data 
+  private let imageData: Data
 
   /// Image view of the robot.
-  lazy var imageView: UIImageView = {
+  private lazy var imageView: UIImageView = {
     let imageView = UIImageView()
     imageView.translatesAutoresizingMaskIntoConstraints = false
     imageView.contentMode = .scaleAspectFit
@@ -28,7 +28,7 @@ class RobotViewController: UIViewController {
   }()
 
   // Label of the robot text.
-  lazy var label: UILabel = {
+  private lazy var label: UILabel = {
     let label = UILabel()
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = robot.text

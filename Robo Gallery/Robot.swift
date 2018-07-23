@@ -11,7 +11,7 @@ import UIKit
 import RealmSwift
 
 /// Robot is made up of both a UIString and a UIImage. The `text` string is the text used to fetch the robot and the `image` is the resulting image from the fetch.
-class Robot: Object {
+final class Robot: Object {
 
   /// Text used to fetch the Robot.
   @objc dynamic var text = ""
@@ -41,7 +41,7 @@ class Robot: Object {
   }
 }
 
-class RobotImage: Object {
+final class RobotImage: Object {
   @objc dynamic var key = 0
 
   @objc dynamic var data = Data()

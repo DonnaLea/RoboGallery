@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RobotCollectionViewCell: UICollectionViewCell {
+final class RobotCollectionViewCell: UICollectionViewCell {
 
   // MARK: - Properties
 

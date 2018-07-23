@@ -12,18 +12,18 @@ import Alamofire
 import AlamofireImage
 import RealmSwift
 
-class GalleryViewController: UICollectionViewController {
+final class GalleryViewController: UICollectionViewController {
 
   // MARK: - Properties
 
-  fileprivate struct Constants {
+  private struct Constants {
     static let cellSpacing = CGFloat(2.0)
     static let itemsPerRow: CGFloat = 4
     static let robotURL: String = "https://robohash.org/"
   }
 
   // Search field.
-  let searchController: UISearchController = {
+  private let searchController: UISearchController = {
     let searchController = UISearchController(searchResultsController: nil)
     // Don't hide the navigation bar because the search bar is in it.
     searchController.hidesNavigationBarDuringPresentation = false
@@ -33,21 +33,21 @@ class GalleryViewController: UICollectionViewController {
     return searchController
   }()
 
-  let segmentedControl: UISegmentedControl = {
+  private let segmentedControl: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: ["Set 1", "Set 2", "Set 3"])
     segmentedControl.selectedSegmentIndex = 0
 
     return segmentedControl
   }()
 
-  var currentIndex: Int {
+  private var currentIndex: Int {
     return segmentedControl.selectedSegmentIndex
   }
 
   // Realm.
-  let realm: Realm
-  let robots: Results<Robot>
-  var notificationToken: NotificationToken?
+  private let realm: Realm
+  private let robots: Results<Robot>
+  private var notificationToken: NotificationToken?
 
   // MARK: - Init
 
@@ -107,7 +107,7 @@ class GalleryViewController: UICollectionViewController {
 
   // MARK: - Actions
 
-  @objc func segmentedControlTapped(sender: UISegmentedControl) {
+  @objc private func segmentedControlTapped(sender: UISegmentedControl) {
     // Using reloadSections instead of reloadData due to a bug where performBatchUpdates after reloadData does not finish reloading the other cells.
     // Details can be seen at this open radar: http://www.openradar.me/31748196 and github project made for the openradar https://github.com/lionheart/openradar-mirror/issues/17286
     collectionView?.reloadSections(IndexSet(integer: 0))
@@ -160,7 +160,7 @@ class GalleryViewController: UICollectionViewController {
     }
   }
 
-  func addRealmNotificationHandler() {
+  private func addRealmNotificationHandler() {
     notificationToken = robots.observe { changes in
       guard let collectionView = self.collectionView else { return }
       switch changes {
