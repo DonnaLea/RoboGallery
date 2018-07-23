@@ -33,6 +33,12 @@ class GalleryViewController: UICollectionViewController {
     return searchController
   }()
 
+  let segmentedControl: UISegmentedControl = {
+    let segmentedControl = UISegmentedControl(items: ["Set 1", "Set 2", "Set 3"])
+    segmentedControl.selectedSegmentIndex = 0
+
+    return segmentedControl
+  }()
   // Realm.
   let realm: Realm
   let robots: Results<Robot>
@@ -110,9 +116,6 @@ class GalleryViewController: UICollectionViewController {
   }
 
   private func addSegmentedControl() {
-    let segmentedControl = UISegmentedControl(items: ["Set 1", "Set 2", "Set 3"])
-    segmentedControl.selectedSegmentIndex = 0
-    segmentedControl.addTarget(self, action: #selector(segmentedControlTapped(sender:)), for: .valueChanged)
     let segmentControlToolbarItem = UIBarButtonItem(customView: segmentedControl)
     let toolbarSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let toolbarItems = [toolbarSpace, segmentControlToolbarItem, toolbarSpace]
