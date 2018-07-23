@@ -77,7 +77,9 @@ class GalleryViewController: UICollectionViewController {
     collectionView?.register(RobotCollectionViewCell.self, forCellWithReuseIdentifier: RobotCollectionViewCell.reuseIdentifier())
 
     // Place the search bar in the navigation item's title view.
-    self.navigationItem.titleView = searchController.searchBar
+    navigationItem.titleView = searchController.searchBar
+
+    addSegmentedControl()
   }
 
   // MARK: - Custom
@@ -105,6 +107,21 @@ class GalleryViewController: UICollectionViewController {
       searchController.isActive = false
       searchController.searchBar.text = nil
     }
+  }
+
+  private func addSegmentedControl() {
+    let segmentedControl = UISegmentedControl(items: ["Set 1", "Set 2", "Set 3"])
+    segmentedControl.selectedSegmentIndex = 0
+    segmentedControl.addTarget(self, action: #selector(segmentedControlTapped(sender:)), for: .valueChanged)
+    let segmentControlToolbarItem = UIBarButtonItem(customView: segmentedControl)
+    let toolbarSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let toolbarItems = [toolbarSpace, segmentControlToolbarItem, toolbarSpace]
+    setToolbarItems(toolbarItems, animated: false)
+    navigationController?.isToolbarHidden = false
+  }
+
+  @objc func segmentedControlTapped(sender: UISegmentedControl) {
+    print("segment: \(sender.selectedSegmentIndex)")
   }
 
   func addRealmNotificationHandler() {
