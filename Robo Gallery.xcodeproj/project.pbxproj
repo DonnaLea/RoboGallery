@@ -20,6 +20,7 @@
 		6767958E2101A23B007DF6CA /* ImageActivityCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6767958D2101A23B007DF6CA /* ImageActivityCollectionViewCell.swift */; };
 		676795902101B5ED007DF6CA /* RobotViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6767958F2101B5ED007DF6CA /* RobotViewController.swift */; };
 		678556F221043A6600C9ACCA /* RealmConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 678556F121043A6600C9ACCA /* RealmConstants.swift */; };
+		67C1A6F32105B78E007ECD8C /* cool.png in Resources */ = {isa = PBXBuildFile; fileRef = 67C1A6F22105B78E007ECD8C /* cool.png */; };
 		74A04814C368A0D0390A9E30 /* Pods_Robo_Gallery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A592C4F712A367608F2C847 /* Pods_Robo_Gallery.framework */; };
 /* End PBXBuildFile section */
 
@@ -61,6 +62,7 @@
 		6767958D2101A23B007DF6CA /* ImageActivityCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageActivityCollectionViewCell.swift; sourceTree = "<group>"; };
 		6767958F2101B5ED007DF6CA /* RobotViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RobotViewController.swift; sourceTree = "<group>"; };
 		678556F121043A6600C9ACCA /* RealmConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmConstants.swift; sourceTree = "<group>"; };
+		67C1A6F22105B78E007ECD8C /* cool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cool.png; sourceTree = "<group>"; };
 		86632D82231551200DC57613 /* Pods-Robo GalleryTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Robo GalleryTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Robo GalleryTests/Pods-Robo GalleryTests.debug.xcconfig"; sourceTree = "<group>"; };
 		8A592C4F712A367608F2C847 /* Pods_Robo_Gallery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Robo_Gallery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FF61A9B377331E13DC38B6F /* Pods-Robo Gallery.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Robo Gallery.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Robo Gallery/Pods-Robo Gallery.debug.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 		6763FA3F210044CC00CC9711 /* Robo GalleryTests */ = {
 			isa = PBXGroup;
 			children = (
+				67C1A6F22105B78E007ECD8C /* cool.png */,
 				6763FA40210044CC00CC9711 /* Robo_GalleryTests.swift */,
 				6763FA42210044CC00CC9711 /* Info.plist */,
 			);
@@ -294,6 +297,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				67C1A6F32105B78E007ECD8C /* cool.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
